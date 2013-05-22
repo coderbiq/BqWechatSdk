@@ -10,4 +10,4 @@ composer.lock
 *.swp
 *~
 .appconfig
-vendor/bin
+vendor/*
