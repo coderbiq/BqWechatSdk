@@ -43,5 +43,19 @@ class Listener
 
     protected function triggerPushEvent()
     {
+        $event = new PushEvent();
+        $event->setName(PushEvent::EVENT_PUSH);
+
+        $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+        if (!empty($postStr)) {
+            $postObj = simplexml_load_string(
+                $postStr, 
+                'SimpleXMLElement', 
+                LIBXML_NOCDATA);
+            $message = new Message($postObj);
+            $event->setMessage($message);
+        }
+
+        return $this->eventManager->trigger($event);
     }
 }
