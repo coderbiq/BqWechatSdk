@@ -31,6 +31,11 @@ class Message
         return $this->isType(self::TYPE_IMAGE);
     }
 
+    public function isLocation()
+    {
+        return $this->isType(self::TYPE_LOCATION);
+    }
+
     public function getType()
     {
         return $this->postData->MsgType;
