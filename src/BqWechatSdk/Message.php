@@ -198,6 +198,27 @@ class Message
         return $value;
     }
 
+    public function getMusicUrl()
+    {
+        return $this->getData('music_url');
+    }
+
+    public function getHQMusicUrl()
+    {
+        return $this->getData('hq_music_url');
+    }
+
+    public function getMusicTitle()
+    {
+        return $this->getData('music_title');
+    }
+
+    public function getMusicDescription()
+    {
+        return $this->getData('music_description');
+    }
+
+
     public function setType($type)
     {
         $this->data['type'] = $type;
@@ -246,7 +267,30 @@ class Message
         return $this;
     }
 
+    public function setMusicTitle($title)
+    {
+        $this->data['music_title'] = $title;
+        return $this;
+    }
+
+    public function setMusicDescription($description)
+    {
+        $this->data['music_description'] = $description;
+        return $this;
+    }
+
     public function toXml()
+    {
+        switch($this->getType())
+        {
+        case self::TYPE_TEXT:
+            return $this->toTextXml();
+        case self::TYPE_MUSIC:
+            return $this->toMusicXml();
+        }
+    }
+
+    protected function toTextXml()
     {
         $xml = "
             <xml>
@@ -269,13 +313,45 @@ class Message
         );
     }
 
-    protected function getData($name, $postName)
+    protected function toMusicXml()
+    {
+        $xml = "
+            <xml>
+                <ToUserName><![CDATA[%s]]></ToUserName>
+                <FromUserName><![CDATA[%s]]></FromUserName>
+                <CreateTime>%d</CreateTime>
+                <MsgType><![CDATA[%s]]></MsgType>
+                <Music>
+                    <Title><![CDATA[%s]]></Title>
+                    <Description><![CDATA[%s]]></Description>
+                    <MusicUrl><![CDATA[%s]]></MusicUrl>
+                    <HQMusicUrl><![CDATA[%s]]></HQMusicUrl>
+                </Music>
+                <FuncFlag>%d</FuncFlag>
+            </xml>
+            ";
+
+        return sprintf(
+            $xml,
+            $this->getToUserName(),
+            $this->getFromUserName(),
+            $this->getCreateTime(),
+            $this->getType(),
+            $this->getMusicTitle(),
+            $this->getMusicDescription(),
+            $this->getMusicUrl(),
+            $this->getHQMusicUrl(),
+            $this->getFuncFlag()
+        );
+    }
+
+    protected function getData($name, $postName = null)
     {
         $value = null;
 
         if(isset($this->data[$name])) {
             $value = $this->data[$name];
-        } elseif( $this->postData !== null) {
+        } elseif( $this->postData !== null && $postName !== null) {
             $this->data[$name] = $this->postData->$postName;
             $value             = $this->data[$name];
         }

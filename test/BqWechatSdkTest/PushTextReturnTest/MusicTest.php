@@ -16,8 +16,10 @@ class MusicTest extends PushTextReturnTestCase
         $this->assertEquals('123456789', $output->CreateTime);
         $this->assertEquals('0', $output->FuncFlag);
         $this->assertEquals('music', $output->MsgType);
-        $this->assertEquals('url', $output->MusicUrl);
-        $this->assertEquals('hqurl', $output->HQMusicUrl);
+        $this->assertEquals('url', $output->Music->MusicUrl);
+        $this->assertEquals('hqurl', $output->Music->HQMusicUrl);
+        $this->assertEquals('music title', $output->Music->Title);
+        $this->assertEquals('music description', $output->Music->Description);
     }
 
     public function onPush($event)
@@ -30,7 +32,9 @@ class MusicTest extends PushTextReturnTestCase
             ->setCreateTime(123456789)
             ->setFuncFlag(0)
             ->setMusicUrl('url')
-            ->setHQMusicUrl('hqurl');
+            ->setHQMusicUrl('hqurl')
+            ->setMusicTitle('music title')
+            ->setMusicDescription('music description');
         $result = new Result();
         $result->setMessage($message);
         return $result;
