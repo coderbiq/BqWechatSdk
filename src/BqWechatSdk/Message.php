@@ -9,16 +9,30 @@ class Message
     const TYPE_LINK              = 'link';
     const TYPE_EVENT             = 'event';
     const TYPE_MUSIC             = 'music';
+    const TYPE_NEWS              = 'news';
     const EVENT_TYPE_SUBSCRIBE   = 'subscribe';
     const EVENT_TYPE_UNSUBSCRIBE = 'unsubscribe';
     const EVENT_TYPE_CLICK       = 'CLICK';
 
     protected $postData;
     protected $data;
+    protected $newsItem = array();
 
     public function __construct($postData = null)
     {
         $this->postData = $postData;
+    }
+
+    public function addNewsItem($title, $description, $picUrl, $url)
+    {
+        $this->newsItem[] = array(
+            'title'       => $title,
+            'description' => $description,
+            'pic_url'     => $picUrl,
+            'url'         => $url
+        );
+
+        return $this;
     }
 
     public function isType($type = self::TYPE_TEXT)
@@ -287,7 +301,56 @@ class Message
             return $this->toTextXml();
         case self::TYPE_MUSIC:
             return $this->toMusicXml();
+        case self::TYPE_NEWS:
+            return $this->toNewsXml();
         }
+    }
+
+    protected function toNewsXml()
+    {
+        $xml = "
+            <xml>
+                <ToUserName><![CDATA[%s]]></ToUserName>
+                <FromUserName><![CDATA[%s]]></FromUserName>
+                <CreateTime>%d</CreateTime>
+                <MsgType><![CDATA[%s]]></MsgType>
+                <ArticleCount>%d</ArticleCount>
+                <Articles>%s</Articles>
+                <FuncFlag>%d</FuncFlag>
+            </xml> 
+            ";
+
+        $itemXml = "
+            <item>
+                <Title><![CDATA[%s]]></Title> 
+                <Description><![CDATA[%s]]></Description>
+                <PicUrl><![CDATA[%s]]></PicUrl>
+                <Url><![CDATA[%s]]></Url>
+            </item>
+            ";
+
+        $itemArray = array();
+        foreach($this->newsItem as $item) {
+            $itemArray[] = sprintf(
+                $itemXml,
+                $item['title'],
+                $item['description'],
+                $item['pic_url'],
+                $item['url']
+            );
+        }
+        $itemString = implode($itemArray);
+
+        return sprintf(
+            $xml,
+            $this->getToUserName(),
+            $this->getFromUserName(),
+            $this->getCreateTime(),
+            $this->getType(),
+            count($itemArray),
+            $itemString,
+            $this->getFuncFlag()
+        );
     }
 
     protected function toTextXml()
