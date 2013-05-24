@@ -21,6 +21,10 @@ class NewsTest extends PushTextReturnTestCase
         $this->assertEquals('test item 1', $output->Articles->item->Description);
         $this->assertEquals('test item 1 pic url', $output->Articles->item->PicUrl);
         $this->assertEquals('test item 1 url', $output->Articles->item->Url);
+        $this->assertEquals('test item 2', $output->Articles->item[1]->Title);
+        $this->assertEquals('test item 2', $output->Articles->item[1]->Description);
+        $this->assertEquals('test item 2 pic url', $output->Articles->item[1]->PicUrl);
+        $this->assertEquals('test item 2 url', $output->Articles->item[1]->Url);
     }
 
     public function onPush($event)
