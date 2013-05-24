@@ -26,6 +26,11 @@ class Message
         return $this->isType(self::TYPE_TEXT);
     }
 
+    public function isImage()
+    {
+        return $this->isType(self::TYPE_IMAGE);
+    }
+
     public function getType()
     {
         return $this->postData->MsgType;
@@ -60,7 +65,7 @@ class Message
         }
     }
 
-    public function getImageUrl()
+    public function getPicUrl()
     {
         if($this->isType(self::TYPE_IMAGE)) {
             return $this->postData->PicUrl;
