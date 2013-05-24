@@ -3,11 +3,14 @@ namespace BqWechatSdk;
 
 class Message
 {
-    const TYPE_TEXT     = 'text';
-    const TYPE_IMAGE    = 'image';
-    const TYPE_LOCATION = 'location';
-    const TYPE_LINK     = 'link';
-    const TYPE_EVENT    = 'event';
+    const TYPE_TEXT              = 'text';
+    const TYPE_IMAGE             = 'image';
+    const TYPE_LOCATION          = 'location';
+    const TYPE_LINK              = 'link';
+    const TYPE_EVENT             = 'event';
+    const EVENT_TYPE_SUBSCRIBE   = 'subscribe';
+    const EVENT_TYPE_UNSUBSCRIBE = 'unsubscribe';
+    const EVENT_TYPE_CLICK       = 'CLICK';
 
     protected $postData;
 
@@ -39,6 +42,44 @@ class Message
     public function isLink()
     {
         return $this->isType(self::TYPE_LINK);
+    }
+
+    public function isEvent()
+    {
+        return $this->isType(self::TYPE_EVENT);
+    }
+
+    public function isSubscribeEvent()
+    {
+        $valid = false;
+        if(
+            $this->isEvent() 
+            && $this->getEvent() == self::EVENT_TYPE_SUBSCRIBE) {
+                $valid = true;
+        }
+        return $valid;
+    }
+
+    public function isUnsubscribeEvent()
+    {
+        $valid = false;
+        if(
+            $this->isEvent() 
+            && $this->getEvent() == self::EVENT_TYPE_UNSUBSCRIBE) {
+                $valid = true;
+        }
+        return $valid;
+    }
+
+    public function isClickEvent()
+    {
+        $valid = false;
+        if(
+            $this->isEvent() 
+            && $this->getEvent() == self::EVENT_TYPE_CLICK) {
+                $valid = true;
+        }
+        return $valid;
     }
 
     public function getType()
