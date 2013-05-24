@@ -13,15 +13,16 @@ class Message
     const EVENT_TYPE_CLICK       = 'CLICK';
 
     protected $postData;
+    protected $data;
 
-    public function __construct($postData)
+    public function __construct($postData = null)
     {
         $this->postData = $postData;
     }
 
     public function isType($type = self::TYPE_TEXT)
     {
-        return $this->postData->MsgType == $type;
+        return $this->getType() == $type;
     }
 
     public function isText()
@@ -84,22 +85,22 @@ class Message
 
     public function getType()
     {
-        return $this->postData->MsgType;
+        return $this->getData('type', 'MsgType');
     }
 
     public function getFromUserName()
     {
-        return $this->postData->FromUserName;
+        return $this->getData('from_user_name', 'FromUserName');
     }
 
     public function getToUserName()
     {
-        return $this->postData->ToUserName;
+        return $this->getData('to_user_name','ToUserName');
     }
 
     public function getCreateTime()
     {
-        return $this->postData->CreateTime;
+        return $this->getData('create_time', 'CreateTime');
     }
 
     public function getMsgId()
@@ -112,7 +113,7 @@ class Message
     public function getContent()
     {
         if($this->isType(self::TYPE_TEXT)) {
-            return $this->postData->Content;
+            return $this->getData('content', 'Content');
         }
     }
 
@@ -184,5 +185,88 @@ class Message
         if($this->isType(self::TYPE_EVENT)) {
             return $this->postData->EventKey;
         }
+    }
+
+    public function getFuncFlag()
+    {
+        $value = null;
+        if(isset($this->data['func_flag'])) {
+            $value = $this->data['func_flag'];
+        }
+
+        return $value;
+    }
+
+    public function setType($type)
+    {
+        $this->data['type'] = $type;
+        return $this;
+    }
+
+    public function setFromUserName($fromUserName)
+    {
+        $this->data['from_user_name'] = $fromUserName;
+        return $this;
+    }
+
+    public function setToUserName($toUserName)
+    {
+        $this->data['to_user_name'] = $toUserName;
+        return $this;
+    }
+
+    public function setContent($content)
+    {
+        $this->data['content'] = $content;
+        return $this;
+    }
+
+    public function setCreateTime($createTime)
+    {
+        $this->data['create_time'] = $createTime;
+        return $this;
+    }
+
+    public function setFuncFlag($funcFlag)
+    {
+        $this->data['func_flag'] = $funcFlag;
+        return $this;
+    }
+
+    public function toXml()
+    {
+        $xml = "
+            <xml>
+                <ToUserName><![CDATA[%s]]></ToUserName>
+                <FromUserName><![CDATA[%s]]></FromUserName>
+                <CreateTime>%d</CreateTime>
+                <MsgType><![CDATA[%s]]></MsgType>
+                <Content><![CDATA[%s]]></Content>
+                <FuncFlag>%d</FuncFlag>
+            </xml>
+            ";
+        return sprintf(
+            $xml, 
+            $this->getToUserName(), 
+            $this->getFromUserName(),
+            $this->getCreateTime(),
+            $this->getType(),
+            $this->getContent(),
+            $this->getFuncFlag()
+        );
+    }
+
+    protected function getData($name, $postName)
+    {
+        $value = null;
+
+        if(isset($this->data[$name])) {
+            $value = $this->data[$name];
+        } elseif( $this->postData !== null) {
+            $this->data[$name] = $this->postData->$postName;
+            $value             = $this->data[$name];
+        }
+
+        return $value;
     }
 }
