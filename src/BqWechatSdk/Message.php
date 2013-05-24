@@ -8,6 +8,7 @@ class Message
     const TYPE_LOCATION          = 'location';
     const TYPE_LINK              = 'link';
     const TYPE_EVENT             = 'event';
+    const TYPE_MUSIC             = 'music';
     const EVENT_TYPE_SUBSCRIBE   = 'subscribe';
     const EVENT_TYPE_UNSUBSCRIBE = 'unsubscribe';
     const EVENT_TYPE_CLICK       = 'CLICK';
@@ -230,6 +231,18 @@ class Message
     public function setFuncFlag($funcFlag)
     {
         $this->data['func_flag'] = $funcFlag;
+        return $this;
+    }
+
+    public function setMusicUrl($url)
+    {
+        $this->data['music_url'] = $url;
+        return $this;
+    }
+
+    public function setHQMusicUrl($url)
+    {
+        $this->data['hq_music_url'] = $url;
         return $this;
     }
 
