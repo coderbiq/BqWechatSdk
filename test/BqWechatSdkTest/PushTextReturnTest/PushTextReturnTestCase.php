@@ -1,14 +1,12 @@
 <?php
-namespace BqWechatSdkTest;
+namespace BqWechatSdkTest\PushTextReturnTest;
 
 use PHPUnit_Framework_TestCase;
 use Zend\EventManager\EventManager;
 use BqWechatSdk\Listener;
 use BqWechatSdk\Event\Push;
-use BqWechatSdk\Message;
-use BqWechatSdk\Event\Result;
 
-class PushTextReturnTextTest extends PHPUnit_Framework_TestCase
+abstract class PushTextReturnTestCase extends PHPUnit_Framework_TestCase
 {
     protected $eventManager;
     protected $triggerPush = false;
@@ -29,39 +27,20 @@ class PushTextReturnTextTest extends PHPUnit_Framework_TestCase
         $this->eventManager->attach(Push::EVENT_PUSH, array($this, 'onPush'));
     }
 
-    public function testPushTextReturnText()
+    protected function getOutput()
     {
         $listenner = new Listener();
 
         ob_start();
         $listenner->setEventManager($this->eventManager)->run();
         $output = ob_get_contents();
+        ob_end_clean();
+
         $outputObj = simplexml_load_string(
             $output, 
             'SimpleXMLElement', 
             LIBXML_NOCDATA);
-        $this->assertInstanceOf('SimpleXMLElement', $outputObj);
-        $this->assertEquals('text', $outputObj->MsgType);
-        $this->assertEquals('test content', $outputObj->Content);
-        $this->assertEquals('0', $outputObj->FuncFlag);
-        $this->assertEquals('123456789', $outputObj->CreateTime);
-        $this->assertEquals('fromUser', $outputObj->FromUserName);
-        $this->assertEquals('toUser', $outputObj->ToUserName);
-        ob_end_clean();
-    }
 
-    public function onPush($event)
-    {
-        $message = new Message();
-        $message
-            ->setType(Message::TYPE_TEXT)
-            ->setFromUserName('fromUser')
-            ->setToUserName('toUser')
-            ->setContent('test content')
-            ->setCreateTime(123456789)
-            ->setFuncFlag(0);
-        $result = new Result();
-        $result->setMessage($message);
-        return $result;
+        return $outputObj;
     }
 }
