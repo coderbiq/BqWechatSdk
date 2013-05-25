@@ -1,4 +1,12 @@
 <?php
+/**
+ * BqWechatSdk (https://github.com/elvis-bi/BqWechatSdk)
+ *
+ * @link https://github.com/elvis-bi/BqWechatSdk for this canonical source repository
+ * @copyright elvis bi (elvis@dwenzi.com)
+ * @license http://opensource.org/licenses/mit-license.php MIT License
+ */
+
 namespace BqWechatSdk\Event\Listener;
 
 use Zend\EventManager\EventManagerInterface;
@@ -6,6 +14,9 @@ use Zend\EventManager\ListenerAggregateInterface;
 use BqWechatSdk\Event\Push;
 use BqWechatSdk\Event\Result;
 
+/**
+ * 类Valid监听微信发送的网址接入验证，并返回验证结果
+ */
 class Valid implements ListenerAggregateInterface
 {
     protected $listeners = array();
