@@ -1,6 +1,7 @@
 <?php
 namespace BqWechatSdk\Event;
 
+use Exception;
 use BqWechatSdk\Message;
 
 class Result
@@ -15,7 +16,13 @@ class Result
 
     public function setMessage(Message $message)
     {
+        if(!$message->allowOutput()) {
+            $error = sprintf('must not return %s message ', $message->getType());
+            throw new Exception($error);
+        }
+
         $this->message = $message;
+        return $this;
     }
 
     public function output()

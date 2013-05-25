@@ -4,7 +4,7 @@ namespace BqWechatSdk\Message;
 use SimpleXMLElement;
 use BqWechatSdk\Message;
 
-class Text extends AbstractMessage
+class Text extends AbstractMessage implements OutputMessageInterface
 {
     public function exchangeXml(SimpleXMLElement $xml)
     {

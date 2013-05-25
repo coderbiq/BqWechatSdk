@@ -4,6 +4,7 @@ namespace BqWechatSdk;
 use ReflectionObject;
 use Exception;
 use BqWechatSdk\Message\MessageInterface;
+use BqWechatSdk\Message\OutputMessageInterface;
 
 class Message
 {
@@ -76,6 +77,11 @@ class Message
     {
         $this->typePrototype = $typePrototype;
         return $this;
+    }
+
+    public function allowOutput()
+    {
+        return $this->typePrototype instanceof OutputMessageInterface;
     }
 
     public function toXml()

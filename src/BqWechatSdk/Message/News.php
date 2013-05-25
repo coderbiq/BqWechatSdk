@@ -3,7 +3,7 @@ namespace BqWechatSdk\Message;
 
 use BqWechatSdk\Message;
 
-class News extends AbstractMessage
+class News extends AbstractMessage implements OutputMessageInterface
 {
     protected $newsItem = array();
 

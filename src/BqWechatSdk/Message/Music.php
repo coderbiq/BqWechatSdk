@@ -3,7 +3,7 @@ namespace BqWechatSdk\Message;
 
 use BqWechatSdk\Message;
 
-class Music extends AbstractMessage
+class Music extends AbstractMessage implements OutputMessageInterface
 {
     public function getType()
     {

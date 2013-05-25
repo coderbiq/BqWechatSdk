@@ -7,5 +7,4 @@ interface MessageInterface
 {
     public function exchangeArray(Array $array);
     public function exchangeXml(SimpleXMLElement $xml);
-#    public function toXmlString();
 }
