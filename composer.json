@@ -1,0 +1,25 @@
+{
+    "name": "elvis-bi/bq-wechat-sdk",
+    "description": "PHP版的腾讯微信公众平台SDK。",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "wechat",
+        "sdk"
+    ],
+    "homepage": "https://github.com/elvis-bi/BqWechatSdk",
+    "authors": [
+        {
+            "name": "Elvis Bi",
+            "email": "elvis@dwenzi.com",
+            "homepage": "http://www.dwenzi.com/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-eventmanager": "2.2.0"
+    },
+    "autoload": {
+        "psr-0": { "BqWechatSdk": "src/" }
+    }
+}
