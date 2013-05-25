@@ -19,7 +19,7 @@ BqWechatSdk是由PHP编辑写的微信公众平台SDK，实现了微信网址接
     ```
     "require": {
         ...
-        "elvis_bi/bq-wechat-sdk": "0.1.0Alpha"
+        "elvis-bi/bq-wechat-sdk": "0.1.0Alpha"
         ...
     }
     ```
