@@ -52,7 +52,8 @@ class Listener
                 $postStr, 
                 'SimpleXMLElement', 
                 LIBXML_NOCDATA);
-            $message = new Message($postObj);
+            $message = new Message();
+            $message->exchangeXml($postObj);
             $event->setMessage($message);
         }
 
