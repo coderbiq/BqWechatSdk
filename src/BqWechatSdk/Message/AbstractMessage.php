@@ -16,70 +16,67 @@ abstract class AbstractMessage implements MessageInterface
 
     public function exchangeXml(SimpleXMLElement $xml)
     {
-        $this->postData = $xml;
+        $this
+            ->setFromUserName($xml->FromUserName)
+            ->setToUserName($xml->ToUserName)
+            ->setCreateTime($xml->CreateTime);
         return $this;
     }
 
     public function getFromUserName()
     {
-        return $this->getData('from_user_name', 'FromUserName');
+        return $this->getData('from_user_name');
     }
 
     public function getToUserName()
     {
-        return $this->getData('to_user_name','ToUserName');
+        return $this->getData('to_user_name');
     }
 
     public function getCreateTime()
     {
-        return $this->getData('create_time', 'CreateTime');
+        return $this->getData('create_time');
     }
 
     public function getFuncFlag()
     {
-        $value = null;
-        if(isset($this->data['func_flag'])) {
-            $value = $this->data['func_flag'];
-        }
-
-        return $value;
+        return $this->getData('func_flag');
     }
 
     public function setFromUserName($fromUserName)
     {
-        $this->data['from_user_name'] = $fromUserName;
-        return $this;
+        return $this->setData('from_user_name', $fromUserName);
     }
 
     public function setToUserName($toUserName)
     {
-        $this->data['to_user_name'] = $toUserName;
-        return $this;
+        return $this->setData('to_user_name', $toUserName);
     }
 
     public function setCreateTime($createTime)
     {
-        $this->data['create_time'] = $createTime;
-        return $this;
+        return $this->setData('create_time', $createTime);
     }
 
     public function setFuncFlag($funcFlag)
     {
-        $this->data['func_flag'] = $funcFlag;
-        return $this;
+        return $this->setData('func_flag', $funcFlag);
     }
 
-    protected function getData($name, $postName = null)
+    protected function getData($name)
     {
         $value = null;
 
         if(isset($this->data[$name])) {
             $value = $this->data[$name];
-        } elseif( $this->postData !== null && $postName !== null) {
-            $this->data[$name] = $this->postData->$postName;
-            $value             = $this->data[$name];
         }
 
         return $value;
+    }
+
+    protected function setData($name, $value)
+    {
+        $this->data[$name] = $value;
+        return $this;
     }
 }

@@ -1,10 +1,19 @@
 <?php
 namespace BqWechatSdk\Message;
 
+use SimpleXMLElement;
 use BqWechatSdk\Message;
 
 class Text extends AbstractMessage
 {
+    public function exchangeXml(SimpleXMLElement $xml)
+    {
+        parent::exchangeXml($xml);
+        $this
+            ->setData('msg_id', $xml->MsgId)
+            ->setContent($xml->Content);
+    }
+
     public function getType()
     {
         return Message::TYPE_TEXT;
@@ -12,18 +21,17 @@ class Text extends AbstractMessage
 
     public function getMsgId()
     {
-        return $this->postData->MsgId;
+        return $this->getData('msg_id');
     }
 
     public function getContent()
     {
-        return $this->getData('content', 'Content');
+        return $this->getData('content');
     }
 
     public function setContent($content)
     {
-        $this->data['content'] = $content;
-        return $this;
+        return $this->setData('content', $content);
     }
 
     public function toXmlString()

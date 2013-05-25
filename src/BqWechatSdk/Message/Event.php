@@ -1,6 +1,7 @@
 <?php
 namespace BqWechatSdk\Message;
 
+use SimpleXMLElement;
 use BqWechatSdk\Message;
 
 class Event extends AbstractMessage
@@ -8,6 +9,14 @@ class Event extends AbstractMessage
     const EVENT_TYPE_SUBSCRIBE   = 'subscribe';
     const EVENT_TYPE_UNSUBSCRIBE = 'unsubscribe';
     const EVENT_TYPE_CLICK       = 'CLICK';
+
+    public function exchangeXml(SimpleXMLElement $xml)
+    {
+        parent::exchangeXml($xml);
+        $this
+            ->setData('event', $xml->Event)
+            ->setData('event_key', $xml->EventKey);
+    }
 
     public function getType()
     {
@@ -31,11 +40,11 @@ class Event extends AbstractMessage
 
     public function getEvent()
     {
-        return $this->postData->Event;
+        return $this->getData('event');
     }
 
     public function getEventKey()
     {
-        return $this->postData->EventKey;
+        return $this->getData('event_key');
     }
 }
