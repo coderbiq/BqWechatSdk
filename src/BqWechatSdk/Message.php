@@ -1,4 +1,12 @@
 <?php
+/**
+ * BqWechatSdk (https://github.com/elvis-bi/BqWechatSdk)
+ *
+ * @link https://github.com/elvis-bi/BqWechatSdk for this canonical source repository
+ * @copyright elvis bi (elvis@dwenzi.com)
+ * @license http://opensource.org/licenses/mit-license.php MIT License
+ */
+
 namespace BqWechatSdk;
 
 use ReflectionObject;
@@ -6,6 +14,12 @@ use Exception;
 use BqWechatSdk\Message\MessageInterface;
 use BqWechatSdk\Message\OutputMessageInterface;
 
+/**
+ * 类Message用于封装微信消息
+ *
+ * 在实例化一个message实例以后请先使用setType()或setTypePrototype()访求为消息设
+ * 置一个消息类型，再进行其它属性的设置
+ */
 class Message
 {
     const TYPE_TEXT              = 'text';
